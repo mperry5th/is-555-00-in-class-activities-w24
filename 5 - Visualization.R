@@ -61,8 +61,21 @@ library(tidyverse)
 penguins <- read_csv('https://www.dropbox.com/s/65jmvgoed4i0r57/penguins.csv?dl=1')
 
 penguins %>% 
-  glimpse
+  ggplot(mapping = aes(x = body_mass_g, color = species, fill = species)) +
+  geom_density(alpha = .5, position = 'identity', bins = 15) + #alpha means opacity, position = dodge, stack, identity 
+  theme_bw() +
+  labs(title = 'Whatever string',
+       x = "Body Mass (g)",
+       y = "Count")
 
+
+penguins %>% 
+  ggplot(mapping = aes(x = bill_length_mm, y = bill_depth_mm, color = species, shape = sex)) +
+  geom_point(alpha = .8, position = 'dodge') + #alpha means opacity, position = dodge, stack, identity 
+  theme_bw() +
+  labs(title = 'Whatever string',
+       x = "bill_length_mm",
+       y = "bill_depth_mm")
 # First: one-variable plots
 
 # histogram with body_mass_g

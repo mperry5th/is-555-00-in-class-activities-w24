@@ -142,10 +142,34 @@ ri <- read_csv('https://www.dropbox.com/s/dfjgfytyek44u61/rel_inc.csv?dl=1')
 bnames <- read_csv('https://www.dropbox.com/s/6bck5fy4aag76kw/baby_names.csv?dl=1')
 bob <- read_csv('https://www.dropbox.com/s/mozqpceit51hia7/bob_ross.csv?dl=1')
 
+
+bob_long <- bob %>% 
+  pivot_longer(
+    cols = !1:4,
+    names_to = 'attribute',
+    values_to = 'is_present'
+  )
+
+bob_long %>% 
+  select(attribute, season, episode, is_present) %>% 
+  group_by(season, attribute) %>% 
+  summarize(attribute_count = sum(is_present)) %>% 
+  pivot_wider(
+    names_from = season,
+    values_from = attribute_count
+  )
+
 # see if you can pivot the religious income data into a tidier format
 # what is the most common income bracket for each religion?
 
-
+ri %>% 
+  pivot_longer(
+    cols = !religion,
+    names_to = 'income_bracket',
+    values_to = 'household_num'
+  ) %>% 
+  group_by(religion) %>% 
+  slice_max(household_num)
 
 
 # IMPORTANT: Notice how EASY it is to find the top income for each religion because
@@ -162,7 +186,14 @@ ri %>%
   slice_max(household_count, with_ties = F)
 
 
+bnames %>% 
+  pivot_wider(
+    names_from = c(year, sex),
+    values_from = n
+  ) 
 
-
-
+bnames %>% 
+  group_by(year) %>% 
+  filter(name == 'Tulia') %>% 
+  filter (sex == 'F')
 
